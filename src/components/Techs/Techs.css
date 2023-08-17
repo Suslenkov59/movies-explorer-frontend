@@ -98,13 +98,13 @@
 
     .techs__title {
         font-size: 18px;
-        line-height: 22px;
         margin: 0 0 27px;
+        letter-spacing: -0.72px;
     }
 
-    .techs__descripion-title {
+    .techs__description-title {
         font-size: 30px;
-        line-height: 36px;
+        letter-spacing: -1.2px;
         margin-bottom: 12px;
     }
 

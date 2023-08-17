@@ -27,6 +27,7 @@
 }
 
 .not-found-page__back-btn {
+    all: unset;
     color: #4285F4;
     font-weight: 400;
     font-size: 14px;

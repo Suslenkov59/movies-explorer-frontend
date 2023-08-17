@@ -58,7 +58,7 @@
 }
 
 .register-form__input:focus-visible {
-    box-shadow: 0 1px 0 0 #4285F4;
+    border-bottom: 1px solid #4285F4;
 }
 
 .register-form__label {
@@ -87,8 +87,13 @@
     opacity: 0.8;
 }
 
-register-form__input-field {
-    position: relative;
+.register-form__btn:disabled {
+    color: #C2C2C2;
+    background: #f8f8f8;
+}
+
+.register-form__btn:disabled:hover {
+    opacity: 1;
 }
 
 .register-form__input-error {
@@ -98,6 +103,7 @@ register-form__input-field {
     position: absolute;
     margin: -18px 0;
     max-width: 396px;
+    color: #ee3465;
 }
 
 .register-form__api-error {

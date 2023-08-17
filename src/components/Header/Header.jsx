@@ -11,6 +11,7 @@ import Logo from '../../images/logo.svg';
 
 const Header = ({isLoggedIn}) => {
     const size = useResize();
+
     return (
         <header className="header">
             <Link className="header__route" to="/">

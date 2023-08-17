@@ -1,16 +1,22 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import {useEffect} from 'react';
 import {useFormAndValidation} from '../../hooks/useFormAndValidation';
-
+import {useNavigate} from 'react-router-dom';
 import './Login.css';
 
 import Logo from '../../images/logo.svg';
 
-const Login = () => {
+import {Link} from 'react-router-dom';
+import {validateEmail} from '../../utils/validation';
+
+export default function Login ({onLogin, isLoggedIn, apiErrors}) {
     const {values, handleChange, errors, isValid} = useFormAndValidation();
-    const onLogin = (val) => {
-        console.log(val);
-    };
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/movies');
+        }
+    }, [isLoggedIn]);
 
     return (
         <section className="login-page">
@@ -30,23 +36,17 @@ const Login = () => {
                     <label className="form__label" htmlFor="user-email-input">
                         E-mail
                     </label>
+
                     <input
+                        type="email" name="email" id="user-email-input"
                         className="form__input"
-                        id="user-email-input"
-                        name="email"
-                        value={values.email || ''}
+                        placeholder="Введите почту" minLength="2" maxLength="40" required value={values.email || ''}
                         onChange={handleChange}
-                        type="email"
-                        placeholder="Введите почту"
-                        minLength="2"
-                        maxLength="40"
-                        required/>
-                    <span
-                        className={`form__input-error ${
-                            isValid ? '' : 'form__input-error_active'
-                        }`}
-                    >
-            {errors.email}
+
+                    />
+
+                    <span className={`form__input-error form__input-error_active`}>
+            {validateEmail(values.email).message}
           </span>
                 </div>
 
@@ -54,17 +54,14 @@ const Login = () => {
                     <label className="form__label" htmlFor="user-password-input">
                         Пароль
                     </label>
+
                     <input
+                        type="password" name="password" id="user-password-input"
                         className="form__input"
-                        id="user-password-input"
-                        name="password"
-                        value={values.password || ''}
+                        placeholder="Введите пароль" minLength="1" required value={values.password || ''}
                         onChange={handleChange}
-                        type="password"
-                        placeholder="Введите пароль"
-                        minLength="6"
-                        maxLength="200"
-                        required/>
+                    />
+
                     <span
                         className={`form__input-error ${
                             isValid ? '' : 'form__input-error_active'
@@ -72,9 +69,19 @@ const Login = () => {
                     >
             {errors.password}
           </span>
+
+                    <span className="form__api-error">
+            {apiErrors.login.message === 'Failed to fetch'
+                ? 'При авторизации произошла ошибка.'
+                : apiErrors.login.errorText}
+          </span>
                 </div>
 
-                <button type="submit" className="form__btn">
+                <button
+                    type="submit"
+                    className="form__btn"
+                    disabled={!isValid || validateEmail(values.email).invalid}
+                >
                     Войти
                 </button>
 
@@ -87,6 +94,6 @@ const Login = () => {
             </form>
         </section>
     );
-};
+}
 
-export default Login;
+

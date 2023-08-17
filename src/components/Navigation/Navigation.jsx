@@ -3,7 +3,7 @@ import './Navigation.css';
 import {useLocation, Link} from 'react-router-dom';
 import useResize from '../../hooks/useResize';
 
-const Navigation = ({isLoggedIn}) => {
+export default function Navigation ({isLoggedIn}) {
     let location = useLocation();
     let size = useResize();
 
@@ -22,12 +22,14 @@ const Navigation = ({isLoggedIn}) => {
                               to="/">
                             Главная
                         </Link>
+
                         <Link className={`${routeClass} nav__movies-route${
                             location.pathname === '/movies' ? activeRouteClass : ''
                         }`}
                               to="/movies">
                             Фильмы
                         </Link>
+
                         <Link className={`${routeClass} nav__movies-route${
                             location.pathname === '/saved-movies' ? activeRouteClass : ''
                         }`}
@@ -35,13 +37,15 @@ const Navigation = ({isLoggedIn}) => {
                             Сохраненные фильмы
                         </Link>
                     </div>
-                    <Link className={`nav__route nav__route-account`} to="/profile">Аккаунт</Link>
+
+                    <Link className={`nav__route nav__route-account`} to="/profile">Аккаунт </Link>
                 </>
             ) : (
                 <div className="nav__default">
                     <Link className="nav__route" to="/signup">
                         Регистрация
                     </Link>
+
                     <Link className="nav__route nav__route-btn" to="/signin">
                         Войти
                     </Link>
@@ -49,6 +53,4 @@ const Navigation = ({isLoggedIn}) => {
             )}
         </nav>
     );
-};
-
-export default Navigation;
+}

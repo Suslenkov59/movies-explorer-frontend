@@ -1,47 +1,47 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import {useEffect} from 'react';
+import './Register.css';
+import {Link, useNavigate} from 'react-router-dom';
 import {useFormAndValidation} from '../../hooks/useFormAndValidation';
 import Logo from '../../images/logo.svg';
-import './Register.css';
+import {validateEmail, validateName} from '../../utils/validation';
 
-const Register = () => {
+export default function Register ({onRegister, isLoggedIn, apiErrors}) {
     const {values, handleChange, errors, isValid} = useFormAndValidation();
-    const onRegister = (val) => {
-        console.log(val);
-    };
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/movies');
+        }
+    }, [isLoggedIn]);
 
     return (
         <section className="register-page">
             <Link className="register-page__route" to="/">
                 <img className="register-page__logo" src={Logo} alt="Лого"/>
             </Link>
+
             <h1 className="register-page__title">Добро пожаловать!</h1>
+
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     onRegister(values);
                 }}
-                className="register-form">
+                className="register-form"
+            >
                 <div className="register-form__input-field">
                     <label className="register-form__label" htmlFor="user-name-input">
                         Имя
                     </label>
                     <input
+                        type="text" name="name" id="user-name-input"
                         className="register-form__input"
-                        id="user-name-input"
-                        name="name"
-                        value={values.name || ''}
+                        placeholder="Введите имя" minLength="2" maxLength="40" required value={values.name || ''}
                         onChange={handleChange}
-                        type="text"
-                        placeholder="Введите имя"
-                        minLength="2"
-                        maxLength="40"
-                        required/>
-                    <span
-                        className={`register-form__input-error ${
-                            isValid ? '' : 'register-form__input-error_active'
-                        }`}>
-            {errors.name}
+                    />
+                    <span className={`register-form__input-error`}>
+            {validateName(values.name).message}
           </span>
                 </div>
 
@@ -50,21 +50,13 @@ const Register = () => {
                         E-mail
                     </label>
                     <input
+                        type="email" name="email" id="user-email-input"
                         className="register-form__input"
-                        id="user-email-input"
-                        name="email"
-                        value={values.email || ''}
+                        placeholder="Введите почту" minLength="2" maxLength="40" required value={values.email || ''}
                         onChange={handleChange}
-                        type="email"
-                        placeholder="Введите почту"
-                        minLength="2"
-                        maxLength="40"
-                        required/>
-                    <span
-                        className={`register-form__input-error ${
-                            isValid ? '' : 'register-form__input-error_active'
-                        }`}>
-            {errors.email}
+                    />
+                    <span className={`form__input-error form__input-error_active`}>
+            {validateEmail(values.email).message}
           </span>
                 </div>
 
@@ -73,31 +65,34 @@ const Register = () => {
                         Пароль
                     </label>
                     <input
+                        type="password" name="password" id="user-password-input"
                         className="register-form__input"
-                        id="user-password-input"
-                        name="password"
-                        value={values.password || ''}
+                        placeholder="Введите пароль" minLength="1" maxLength="40" required value={values.password || ''}
                         onChange={handleChange}
-                        type="password"
-                        placeholder="Введите пароль"
-                        minLength="6"
-                        maxLength="200"
-                        required/>
+                    />
                     <span
                         className={`register-form__input-error ${
                             isValid ? '' : 'register-form__input-error_active'
-                        }`}>
+                        }`}
+                    >
             {errors.password}
           </span>
                     <span className="register-form__api-error">
-            Что-то пошло не так...
+            {apiErrors.register.message === 'Failed to fetch'
+                ? 'При регистрации пользователя произошла ошибка.'
+                : apiErrors.register.errorText}
           </span>
                 </div>
 
                 <button
                     type="submit"
                     className="register-form__btn"
-                    disabled={!isValid}>
+                    disabled={
+                        !isValid ||
+                        validateEmail(values.email).invalid ||
+                        validateName(values.name).invalid
+                    }
+                >
                     Зарегистрироваться
                 </button>
 
@@ -110,6 +105,4 @@ const Register = () => {
             </form>
         </section>
     );
-};
-
-export default Register;
+}
