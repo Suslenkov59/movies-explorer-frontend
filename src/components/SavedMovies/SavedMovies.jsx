@@ -3,8 +3,8 @@ import './SavedMovies.css';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
-const SavedMovies = ({savedMovies, onDelete}) => {
-    const [filteredMovies, setFilteredMovies] = useState([]);
+function SavedMovies({savedMovies, onDelete}) {
+    const [filteredMovies, setFilteredMovies] = React.useState([]);
     const searchedMovies = localStorage.getItem('searchedSavedMovies');
     const queries = localStorage.getItem('searchQuerySavedMovies');
     const [searchQuery, setSearchQuery] = useState({});
@@ -20,6 +20,7 @@ const SavedMovies = ({savedMovies, onDelete}) => {
     useEffect(() => {
         if (queries) {
             setSearchQuery(JSON.parse(queries));
+            filterMovies(JSON.parse(queries));
         } else {
             setSearchQuery({...queries, searchText: ''});
         }
@@ -51,7 +52,7 @@ const SavedMovies = ({savedMovies, onDelete}) => {
     };
 
     const handleResetInput = () => {
-        setFilteredMovies(savedMovies);
+        setFilteredMovies([]);
         setSearchQuery({});
         localStorage.removeItem('searchedSavedMovies');
         localStorage.removeItem('searchQuerySavedMovies');
@@ -64,9 +65,10 @@ const SavedMovies = ({savedMovies, onDelete}) => {
                 searchQuery={searchQuery}
                 onResetInput={handleResetInput}
             />
-
             {filteredMovies.length ? (
-                <MoviesCardList movies={filteredMovies} onDelete={onDelete}/>
+                <MoviesCardList
+                    movies={filteredMovies}
+                    onDelete={onDelete}/>
             ) : (
                 searchedMovies && (
                     <p className="movies__not-found">
