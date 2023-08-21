@@ -1,83 +1,61 @@
-import React, {useState, useEffect} from 'react';
-import './SavedMovies.css';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import React, { useState, useEffect } from "react";
+import "./SavedMovies.css";
+import SearchForm from "../SearchForm/SearchForm";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
-function SavedMovies({savedMovies, onDelete}) {
-    const [filteredMovies, setFilteredMovies] = React.useState([]);
-    const searchedMovies = localStorage.getItem('searchedSavedMovies');
-    const queries = localStorage.getItem('searchQuerySavedMovies');
-    const [searchQuery, setSearchQuery] = useState({});
+function SavedMovies({ savedMovies, onDelete }) {
+  const [filteredMovies, setFilteredMovies] = React.useState([]);
 
-    useEffect(() => {
-        if (searchedMovies) {
-            setFilteredMovies(JSON.parse(searchedMovies));
-        } else {
-            setFilteredMovies(savedMovies);
-        }
-    }, [searchedMovies, savedMovies, searchQuery]);
+  const [searchQuery, setSearchQuery] = useState({});
 
-    useEffect(() => {
-        if (queries) {
-            setSearchQuery(JSON.parse(queries));
-            filterMovies(JSON.parse(queries));
-        } else {
-            setSearchQuery({...queries, searchText: ''});
-        }
-    }, [queries, savedMovies]);
+  useEffect(() => {
+    setFilteredMovies(savedMovies);
+  }, [, savedMovies, searchQuery]);
 
-    const filterMovies = (query) => {
-        localStorage.setItem('searchQuerySavedMovies', JSON.stringify(query));
+  const filterMovies = (query) => {
+    let filtered = [];
+    if (query.isShortFilmChecked) {
+      filtered = savedMovies.filter((m) => {
+        return (
+          m.duration <= 40 &&
+          m.nameRU.toLowerCase().trim().includes(query.searchText.toLowerCase())
+        );
+      });
+      setFilteredMovies(filtered);
+    } else if (!query.isShortFilmChecked) {
+      filtered = savedMovies.filter((m) => {
+        return m.nameRU
+          .toLowerCase()
+          .trim()
+          .includes(query.searchText.toLowerCase());
+      });
+      setFilteredMovies(filtered);
+    }
+  };
 
-        let filtered = [];
-        if (query.isShortFilmChecked) {
-            filtered = savedMovies.filter((m) => {
-                return (
-                    m.duration <= 40 &&
-                    m.nameRU.toLowerCase().trim().includes(query.searchText.toLowerCase())
-                );
-            });
-            setFilteredMovies(filtered);
-            localStorage.setItem('searchedSavedMovies', JSON.stringify(filtered));
-        } else if (!query.isShortFilmChecked) {
-            filtered = savedMovies.filter((m) => {
-                return m.nameRU
-                    .toLowerCase()
-                    .trim()
-                    .includes(query.searchText.toLowerCase());
-            });
-            setFilteredMovies(filtered);
-            localStorage.setItem('searchedSavedMovies', JSON.stringify(filtered));
-        }
-    };
+  const handleResetInput = () => {
+    setFilteredMovies([]);
+    setSearchQuery({});
+  };
 
-    const handleResetInput = () => {
-        setFilteredMovies([]);
-        setSearchQuery({});
-        localStorage.removeItem('searchedSavedMovies');
-        localStorage.removeItem('searchQuerySavedMovies');
-    };
-
-    return (
-        <section className="saved-movies">
-            <SearchForm
-                onFilter={filterMovies}
-                searchQuery={searchQuery}
-                onResetInput={handleResetInput}
-            />
-            {filteredMovies.length ? (
-                <MoviesCardList
-                    movies={filteredMovies}
-                    onDelete={onDelete}/>
-            ) : (
-                searchedMovies && (
-                    <p className="movies__not-found">
-                        По вашему запросу ничего не найдено
-                    </p>
-                )
-            )}
-        </section>
-    );
-};
+  return (
+    <section className="saved-movies">
+      <SearchForm
+        onFilter={filterMovies}
+        searchQuery={searchQuery}
+        onResetInput={handleResetInput}
+      />
+      {filteredMovies.length ? (
+        <MoviesCardList movies={filteredMovies} onDelete={onDelete} />
+      ) : (
+        filteredMovies && (
+          <p className="movies__not-found">
+            По вашему запросу ничего не найдено
+          </p>
+        )
+      )}
+    </section>
+  );
+}
 
 export default SavedMovies;
