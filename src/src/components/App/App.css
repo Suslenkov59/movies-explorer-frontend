@@ -1,0 +1,15 @@
+.App {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: #202020;
+
+    box-sizing: border-box;
+    font-family: 'Inter', 'Arial', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+}
+
