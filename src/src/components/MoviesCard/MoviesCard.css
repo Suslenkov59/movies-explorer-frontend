@@ -1,0 +1,148 @@
+.card {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 364px;
+    max-height: 281px;
+    overflow: hidden;
+
+    border-radius: 6px;
+    background: #222;
+    box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.08);
+}
+
+.card__image {
+    vertical-align: bottom;
+    transition: all 0.16s linear;
+    object-fit: cover;
+
+    object-position: top;
+    width: 364px;
+    height: 203px;
+}
+
+.card__image:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+    transform-origin: 50% 100%;
+}
+
+.card__details {
+    padding: 14px;
+    position: relative;
+}
+
+.card__name {
+    color: #fff;
+    margin: 0 0 17px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card__duration {
+    margin: 0;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #a0a0a0;
+}
+
+.card__like-btn {
+    background: no-repeat center/contain url('../../images/icon-heart.svg');
+    padding: 0;
+    margin: 0;
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 19px;
+    right: 24px;
+}
+
+.card__like-btn:hover {
+    opacity: 0.7;
+}
+
+.card__like-btn_liked {
+    background: no-repeat center/contain url('../../images/icon-heart-liked.svg');
+}
+
+.card__like-btn_liked:hover {
+    opacity: 0.7;
+}
+
+.card__delete-btn {
+    background: no-repeat center/contain url('../../images/icon-close.svg');
+    padding: 0;
+    margin: 0;
+    width: 14px;
+    height: 12px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 19px;
+    right: 24px;
+}
+
+.card__container:hover .card__delete-btn {
+    display: block;
+}
+
+@media screen and (max-width: 920px) {
+    .card {
+        max-width: 339px;
+        max-height: 262px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card__image {
+        vertical-align: bottom;
+        transition: all 0.16s linear;
+        object-fit: cover;
+        height: 190px;
+    }
+
+    .card__details {
+        padding: 14px 16px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .card {
+        max-width: 300px;
+        max-height: 327px;
+    }
+
+    .card__image {
+        height: 168px;
+    }
+
+    .card__name {
+        margin: 0 0 14px;
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+    .card__duration {
+        font-size: 10px;
+        line-height: 12px;
+    }
+
+    .card__details {
+        padding: 14px;
+    }
+
+    .card__like-btn {
+        top: 17px;
+        right: 18px;
+    }
+}
+

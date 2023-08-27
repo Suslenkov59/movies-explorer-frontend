@@ -1,0 +1,33 @@
+.header {
+    padding: 0 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 74px;
+    z-index: 1;
+    position: relative;
+}
+
+.header__logo {
+    width: 38px;
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 0 30px;
+        margin-bottom: 18px;
+        display: grid;
+        grid-template-columns: min-content min-content;
+        align-content: center;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .header {
+        padding: 0 15px;
+        margin-bottom: 18px;
+        display: grid;
+        grid-template-columns: min-content min-content;
+        align-content: center;
+    }
+}
